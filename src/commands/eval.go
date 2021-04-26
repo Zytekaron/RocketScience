@@ -115,7 +115,7 @@ func evalRequest(lang, code string) (*EvalResponse, error) {
 }
 
 func doLang(s *discordgo.Session, m *discordgo.Message, lang, template, code string) {
-	if strings.HasPrefix(code, "-") && len(code) > 1 && (code[1] == 'b' || code[1] == 'r') {
+	if strings.HasPrefix(code, "-") && len(code) > 3 && (code[1] == 'b' || code[1] == 'r') {
 		code = code[3:]
 	} else {
 		code = strings.Replace(template, "{{code}}", code, 1)
