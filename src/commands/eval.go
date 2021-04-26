@@ -62,17 +62,11 @@ func evalRegister(name string, variable *string) {
 
 func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	if len(args) < 1 {
-		_, err := reply(s, m, "Include the language to run. Valid evalLanguages: "+evalLanguages)
-		if err != nil {
-			log.Println("Error sending message:", err)
-		}
+		reply(s, m, "Usage: `eval <lang> [-r] <code>`\nSupported languages: "+evalLanguages)
 		return
 	}
 	if len(args) < 2 {
-		_, err := reply(s, m, "Include the language and the code to run.")
-		if err != nil {
-			log.Println("Error sending message:", err)
-		}
+		reply(s, m, "Include the code to execute.")
 		return
 	}
 
@@ -96,7 +90,7 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	case "rs", "rust":
 		doLang(s, m, "rs", evalRustFile, code)
 	default:
-		reply(s, m, "Unsupported language. Supported evalLanguages: "+evalLanguages)
+		reply(s, m, "Unsupported language. Supported languages: "+evalLanguages)
 	}
 }
 
@@ -121,8 +115,8 @@ func evalRequest(lang, code string) (*EvalResponse, error) {
 }
 
 func doLang(s *discordgo.Session, m *discordgo.Message, lang, template, code string) {
-	if strings.HasPrefix(code, "-b") {
-		code = strings.TrimPrefix(code, "-b ")
+	if strings.HasPrefix(code, "-") && len(code) > 1 && (code[1] == 'b' || code[1] == 'r') {
+		code = code[3:]
 	} else {
 		code = strings.Replace(template, "{{code}}", code, 1)
 	}
