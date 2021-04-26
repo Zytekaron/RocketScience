@@ -11,7 +11,8 @@ var cmds = map[string]Command{}
 
 func init() {
 	register(commands.EvalCommand, "ev", "eval")
-	register(commands.HasteCommand, "hst")
+	register(commands.GetCommand, "rsget", "rsview")
+	register(commands.HasteCommand, "hst", "haste")
 	register(commands.PingCommand, "rsping", "rsonline")
 	register(commands.VersionCommand, "rsv", "rsversion")
 }
