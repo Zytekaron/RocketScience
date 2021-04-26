@@ -1,0 +1,50 @@
+package main
+
+import (
+	"bufio"
+	crand "crypto/rand"
+	"encoding/base32"
+	"encoding/base64"
+	"encoding/binary"
+	"encoding/csv"
+	"encoding/json"
+	"encoding/xml"
+	"fmt"
+	"math"
+	"math/big"
+	"math/cmplx"
+	"math/rand"
+	"net"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+)
+
+func main() {
+	{{code}}
+}
+
+func you_cant_see_me() string {
+    time.Now()
+    var _ net.Addr
+    _ = bufio.ErrAdvanceTooFar
+	fmt.Sprint()
+    strings.NewReader("543")
+	math.Max(1, 2)
+	var _ big.Int
+	cmplx.Abs(1)
+	rand.Intn(2)
+	crand.Read(nil)
+    strconv.Itoa(3)
+	var _ http.Request
+	var _ os.File
+	var _ json.Marshaler
+	var _ xml.Marshaler
+	var _ csv.Reader
+    var _ base32.Encoding
+    var _ base64.Encoding
+    var _ binary.ByteOrder
+	return "what the fuck are you doing"
+}
