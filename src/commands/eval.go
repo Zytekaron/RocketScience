@@ -30,7 +30,7 @@ var (
 	// Eval settings/info
 	evalLanguages   = "js, go, java, kt, rust, c, cpp"
 	evalMaxNewLines = 20
-	evalMaxLength   = 1536
+	evalMaxLength   = 1900
 
 	// File evaluation templates
 	evalCFile    string
