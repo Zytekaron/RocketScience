@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"strings"
 )
@@ -14,12 +15,26 @@ func MessageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 }
 
 func commandHandler(s *discordgo.Session, m *discordgo.Message) {
+	if m.Author.Bot {
+		return
+	}
+
 	args := strings.Split(m.Content, " ")
 	cmdName := strings.ToLower(args[0])
 	args = args[1:]
 
 	cmd, ok := cmds[cmdName]
 	if ok {
-		cmd(s, m, args)
+		go func() {
+			defer func() {
+				err := recover()
+				if err != nil {
+					desc := "Panic caught in " + cmdName + ": " + fmt.Sprint(err)
+					fmt.Println(desc)
+					s.ChannelMessageSend(m.ChannelID, desc)
+				}
+			}()
+			cmd(s, m, args)
+		}()
 	}
 }
