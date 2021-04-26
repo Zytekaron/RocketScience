@@ -10,6 +10,7 @@ type Command func(*discordgo.Session, *discordgo.Message, []string)
 var cmds = map[string]Command{}
 
 func init() {
+	register(commands.DevCommand, "rsdev")
 	register(commands.EvalCommand, "ev", "eval")
 	register(commands.GetCommand, "rsget", "rsview")
 	register(commands.HasteCommand, "hst", "haste")
