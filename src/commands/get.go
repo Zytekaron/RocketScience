@@ -37,8 +37,8 @@ func GetCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	}
 
 	content := string(b)
-	if len(content) > 1994 {
-		content = content[:1990] + "\n..."
+	if len(content) > 1992 {
+		content = content[:1988] + "\n..."
 	}
 
 	reply(s, m, "```\n"+content+"\n```")
