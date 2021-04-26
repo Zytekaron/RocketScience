@@ -28,39 +28,44 @@ type EvalResponse struct {
 
 var (
 	// Eval settings/info
+	evalEnabled     = true
+	evalCodes       = "ctx"
 	evalLanguages   = "js, go, java, kt, rust, c, cpp"
 	evalMaxNewLines = 20
 	evalMaxLength   = 1900
 
 	// File evaluation templates
-	evalCFile    string
-	evalCPPFile  string
-	evalGoFile   string
-	evalJavaFile string
-	evalJSFile   string
-	evalKTFile   string
-	evalRustFile string
+	evalTemplates = map[string]string{}
 )
 
 func init() {
-	evalRegister("c", &evalCFile)
-	evalRegister("cpp", &evalCPPFile)
-	evalRegister("go", &evalGoFile)
-	evalRegister("java", &evalJavaFile)
-	evalRegister("js", &evalJSFile)
-	evalRegister("kt", &evalKTFile)
-	evalRegister("rs", &evalRustFile)
+	evalRegister("c")
+	evalRegister("cpp", "cc", "c++")
+	evalRegister("go", "golang")
+	evalRegister("java")
+	evalRegister("js", "javascript", "node", "nodejs")
+	evalRegister("kt", "kotlin")
+	evalRegister("rs", "rust")
 }
 
-func evalRegister(name string, variable *string) {
+func evalRegister(name string, aliases ...string) {
 	data, err := ioutil.ReadFile("./templates/eval/" + name)
 	if err != nil {
 		log.Fatal(err)
 	}
-	*variable = string(data)
+
+	evalTemplates[name] = string(data)
+	for _, alias := range aliases {
+		evalTemplates[alias] = string(data)
+	}
 }
 
 func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
+	if !evalEnabled && !developer(m.Author) {
+		reply(s, m, "Eval is disabled.")
+		return
+	}
+
 	if len(args) < 1 {
 		reply(s, m, "Usage: `eval <lang> [-r] <code>`\nSupported languages: "+evalLanguages)
 		return
@@ -74,23 +79,30 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	code := strings.Join(args[1:], " ")
 
 	switch strings.ToLower(lang) {
-	case "c", "clang":
-		doLang(s, m, "c", evalCFile, code)
-	case "cpp", "c++":
-		doLang(s, m, "cpp", evalCPPFile, code)
+	case "showcontext", "showctx", "ctx":
+		template, ok := evalTemplates[code]
+		if !ok {
+			reply(s, m, "Unsupported language for context.\nSupported languages: "+evalLanguages)
+		} else {
+			reply(s, m, "```"+code+"\n"+template+"\n```")
+		}
+	case "c":
+		doLang(s, m, "c", evalTemplates["c"], code)
+	case "cpp", "cc", "c++":
+		doLang(s, m, "cpp", evalTemplates["cpp"], code)
 	case "go", "golang":
-		doLang(s, m, "go", evalGoFile, code)
-	case "java", "j":
-		doLang(s, m, "java", evalJavaFile, code)
+		doLang(s, m, "go", evalTemplates["go"], code)
+	case "java":
+		doLang(s, m, "java", evalTemplates["java"], code)
 	case "js", "javascript", "node", "nodejs":
 		code = strings.ReplaceAll(code, "`", "\\`")
-		doLang(s, m, "js", evalJSFile, code)
-	case "kt", "kotlin", "k":
-		doLang(s, m, "kt", evalKTFile, code)
+		doLang(s, m, "js", evalTemplates["js"], code)
+	case "kt", "kotlin":
+		doLang(s, m, "kt", evalTemplates["kt"], code)
 	case "rs", "rust":
-		doLang(s, m, "rs", evalRustFile, code)
+		doLang(s, m, "rs", evalTemplates["rs"], code)
 	default:
-		reply(s, m, "Unsupported language. Supported languages: "+evalLanguages)
+		reply(s, m, "Unsupported language or code.\nSupported languages: "+evalLanguages+"\nSupported codes: "+evalCodes)
 	}
 }
 
