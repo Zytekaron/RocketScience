@@ -8,9 +8,15 @@ import (
 	"strings"
 )
 
+var getEnabled = true
 var viewHosts = []string{"hst.sh", "pastebin.com"}
 
 func GetCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
+	if !getEnabled && !developer(m.Author) {
+		reply(s, m, "Get is disabled.")
+		return
+	}
+
 	u := strings.Join(args, " ")
 
 	for _, host := range viewHosts {
