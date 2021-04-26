@@ -90,7 +90,6 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 		doLang(s, m, "java", evalJavaFile, code)
 	case "js", "javascript", "node", "nodejs":
 		code = strings.ReplaceAll(code, "`", "\\`")
-		code = strings.ReplaceAll(code, "\\", "\\\\")
 		doLang(s, m, "js", evalJSFile, code)
 	case "kt", "kotlin", "k":
 		doLang(s, m, "kt", evalKTFile, code)
