@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -43,16 +42,8 @@ func join(delim string, data ...interface{}) string {
 	return strings.Join(out, delim)
 }
 
-func developer(s *discordgo.Session, m *discordgo.Message) bool {
-	if m.Author.ID == "272659147974115328" {
-		return true
-	}
-
-	_, err := s.ChannelMessageSend(m.ChannelID, "You do not have permission to use this command")
-	if err != nil {
-		log.Println(err)
-	}
-	return false
+func developer(u *discordgo.User) bool {
+	return u.ID == "272659147974115328"
 }
 
 func haste(str string) (string, error) {
