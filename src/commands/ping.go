@@ -5,5 +5,5 @@ import (
 )
 
 func PingCommand(s *discordgo.Session, m *discordgo.Message, _ []string) {
-	reply(s, m, "yeah, I'm here")
+	reply(s, m, "pong")
 }
