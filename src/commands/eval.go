@@ -79,7 +79,7 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	code := strings.Join(args[1:], " ")
 
 	switch strings.ToLower(lang) {
-	case "showcontext", "showctx", "ctx":
+	case "ctx":
 		template, ok := evalTemplates[code]
 		if !ok {
 			reply(s, m, "Unsupported language for context.\nSupported languages: "+evalLanguages)
@@ -135,7 +135,7 @@ func doLang(s *discordgo.Session, m *discordgo.Message, lang, template, code str
 
 	res, err := evalRequest(lang, code)
 	if err != nil {
-		_, _ = reply(s, m, "An error occurred when making the request:", err)
+		reply(s, m, "An error occurred when making the request:", err)
 		return
 	}
 
