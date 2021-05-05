@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"bytes"
+	"context"
 	crand "crypto/rand"
 	"encoding/base32"
 	"encoding/base64"
@@ -10,6 +12,8 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"math"
 	"math/big"
 	"math/cmplx"
