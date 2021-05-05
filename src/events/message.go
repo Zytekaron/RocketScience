@@ -15,7 +15,7 @@ func MessageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 }
 
 func commandHandler(s *discordgo.Session, m *discordgo.Message) {
-	if m.Author.Bot {
+	if m.Author != nil && m.Author.Bot {
 		return
 	}
 
