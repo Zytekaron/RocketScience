@@ -42,12 +42,18 @@ func GetCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 		return
 	}
 
+	link := ""
 	content := string(b)
 	if len(content) > 1992 {
-		content = content[:1988] + "\n..."
+		link, err = haste(content)
+		if err != nil {
+			reply(s, m, "Error pasting to hst.sh: ", err.Error())
+			return
+		}
+		content = content[:128] + "\n..."
 	}
 
-	reply(s, m, "```\n"+content+"\n```")
+	reply(s, m, link+"\n```\n"+content+"\n```")
 }
 
 func viewIsUrl(str string) bool {
