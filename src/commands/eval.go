@@ -45,7 +45,9 @@ func init() {
 	evalRegister("java")
 	evalRegister("js", "javascript", "node", "nodejs")
 	evalRegister("kt", "kotlin")
+	evalRegister("py", "python")
 	evalRegister("rs", "rust")
+	evalRegister("zig")
 }
 
 func evalRegister(name string, aliases ...string) {
@@ -99,8 +101,12 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 		doLang(s, m, "js", evalTemplates["js"], code)
 	case "kt", "kotlin":
 		doLang(s, m, "kt", evalTemplates["kt"], code)
+	case "py", "python":
+		doLang(s, m, "py", evalTemplates["py"], code)
 	case "rs", "rust":
 		doLang(s, m, "rs", evalTemplates["rs"], code)
+	case "z", "zig":
+		doLang(s, m, "zig", evalTemplates["zig"], code)
 	default:
 		reply(s, m, "Unsupported language or code.\nSupported languages: "+evalLanguages+"\nSupported codes: "+evalCodes)
 	}
