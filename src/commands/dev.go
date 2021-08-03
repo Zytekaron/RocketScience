@@ -14,7 +14,7 @@ func DevCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 		return
 	}
 
-	if len(args) < 2 {
+	if len(args) == 0 {
 		reply(s, m, "Invalid")
 		return
 	}
@@ -25,6 +25,10 @@ func DevCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	var str string
 	switch option {
 	case "enable", "e", "disable", "d", "toggle", "t":
+		if len(args) == 0 {
+			reply(s, m, "Missing option")
+			return
+		}
 		str = devToggle(args[0], rune(option[0]))
 	case "stop", "s":
 		send(s, m.ChannelID, "RocketScience is shutting down")
@@ -36,6 +40,7 @@ func DevCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 	default:
 		str = "Invalid option: " + option
 	}
+
 	reply(s, m, str)
 }
 
@@ -48,6 +53,7 @@ func devToggle(command string, option rune) string {
 		}
 		return option == 'e' // false for 'd'
 	}
+
 	switch command {
 	case "eval":
 		evalEnabled = transform(evalEnabled)
