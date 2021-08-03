@@ -32,25 +32,31 @@ func main() {
 }
 
 func you_cant_see_me() string {
-    time.Now()
-    url.Parse("")
-    var _ net.Addr
-    _ = bufio.ErrAdvanceTooFar
-	fmt.Sprint()
-    strings.NewReader("543")
-	math.Max(1, 2)
-	var _ big.Int
-	cmplx.Abs(1)
-	rand.Intn(2)
-	crand.Read(nil)
-    strconv.Itoa(3)
-	var _ http.Request
-	var _ os.File
-	var _ json.Marshaler
-	var _ xml.Marshaler
-	var _ csv.Reader
-    var _ base32.Encoding
-    var _ base64.Encoding
-    var _ binary.ByteOrder
+	_ = []interface{}{
+		bufio.NewReader,
+		bytes.NewReader,
+		context.Background,
+		crand.Read,
+		base32.NewDecoder,
+		base64.NewDecoder,
+		binary.Read,
+		csv.NewReader,
+		json.NewEncoder,
+		xml.NewDecoder,
+		fmt.Println,
+		io.WriteString,
+		ioutil.ReadAll,
+		math.Round,
+		big.NewInt,
+		cmplx.Abs,
+		rand.New,
+		net.Dial,
+		http.Post,
+		url.Parse,
+		os.Create,
+		strconv.Itoa,
+		strings.ToLower,
+		time.Now,
+	}
 	return "what the fuck are you doing"
 }
