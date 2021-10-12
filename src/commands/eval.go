@@ -30,7 +30,7 @@ var (
 	// Eval settings/info
 	evalEnabled     = true
 	evalCodes       = "ctx"
-	evalLanguages   = "js, go, java, kt, rust, c, cpp"
+	evalLanguages   = "js, go, java, kt, rust, c, cpp, zig, haskell"
 	evalMaxNewLines = 20
 	evalMaxLength   = 1900
 
@@ -48,6 +48,7 @@ func init() {
 	evalRegister("py", "python")
 	evalRegister("rs", "rust")
 	evalRegister("zig")
+	evalRegister("haskell", "hs")
 }
 
 func evalRegister(name string, aliases ...string) {
@@ -107,6 +108,8 @@ func EvalCommand(s *discordgo.Session, m *discordgo.Message, args []string) {
 		doLang(s, m, "rs", evalTemplates["rs"], code)
 	case "z", "zig":
 		doLang(s, m, "zig", evalTemplates["zig"], code)
+	case "hs", "haskell":
+		doLang(s, m, "haskell", evalTemplates["haskell"], code)
 	default:
 		reply(s, m, "Unsupported language or code.\nSupported languages: "+evalLanguages+"\nSupported codes: "+evalCodes)
 	}
